@@ -1,4 +1,4 @@
-package com.practicum.randomusercft.ui.theme
+package com.practicum.randomusercft.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
