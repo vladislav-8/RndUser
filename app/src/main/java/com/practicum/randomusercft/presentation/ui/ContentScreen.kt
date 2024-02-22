@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -71,9 +73,18 @@ fun Loading() {
 
 @Composable
 fun ErrorOrEmpty() {
-    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+    val viewModel = viewModel<MainActivityViewModel>()
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()
+    ) {
         Text(text = "Something went wrong...", fontSize = 16.sp)
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(onClick = { viewModel.loadUsers() })
+        { Text("TRY AGAIN") }
     }
+
 }
 
 @Composable
