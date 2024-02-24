@@ -22,6 +22,7 @@ class MainActivityViewModel @Inject constructor(private val getAllUsersUseCase: 
     private val _uiState: MutableState<UiState> = mutableStateOf(UiState.START)
     val uiState: State<UiState> get() = _uiState
 
+
     fun loadUsers() = viewModelScope.launch {
         _uiState.value = UiState.LOADING
         try {

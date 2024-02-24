@@ -9,7 +9,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -21,12 +20,29 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class DataModule {
 
+
+    @Singleton
+    @Provides
+    fun providesOkhttpClient(httpLoggingInterceptor: HttpLoggingInterceptor) =
+        OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
+            .connectTimeout(60, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+
+    @Provides
+    fun providesLoggingInterceptor(): HttpLoggingInterceptor {
+        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+    }
+
     @Provides
     @Singleton
-    fun provideRetrofit(): RandomUserApi {
-       return Retrofit.Builder()
+    fun provideRetrofit(okHttpClient: OkHttpClient): RandomUserApi {
+        return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
+            .client(okHttpClient)
             .build()
             .create(RandomUserApi::class.java)
 
@@ -36,7 +52,7 @@ class DataModule {
     fun provideUserRepository(
         api: RandomUserApi,
 
-    ): UsersRepository {
+        ): UsersRepository {
         return UsersRepositoryImpl(api)
     }
 
