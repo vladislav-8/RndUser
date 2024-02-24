@@ -87,4 +87,7 @@ dependencies {
     //hilt
     implementation ("com.google.dagger:hilt-android:2.44.2")
     kapt ("com.google.dagger:hilt-compiler:2.48")
+
+    //pull refresh
+    implementation ("androidx.compose.material:material:1.6.2")
 }
