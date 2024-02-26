@@ -29,14 +29,17 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun UsersListScreen(users: List<UsersModel>) {
-
+fun UsersListScreen(
+    users: List<UsersModel>,
+    onClick: (UsersModel) -> Unit
+) {
     val viewModel = viewModel<MainActivityViewModel>()
 
     val isVisible = remember {
@@ -83,12 +86,8 @@ fun UsersListScreen(users: List<UsersModel>) {
                         .clipToBounds()
                 ) {
                     itemsIndexed(users) { index, item ->
-                        UserCard(
-                            userName = users[index].fullName,
-                            userPhoto = users[index].picture,
-                            userAddress = users[index].country,
-                            userEmail = users[index].email
-                        )
+                        val user = users[index]
+                        UserCard(user = user, onClick = { onClick(user) })
                     }
                 }
                 PullRefreshIndicator(

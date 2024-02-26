@@ -1,5 +1,6 @@
 package com.practicum.randomusercft.presentation.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,20 +24,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.practicum.randomusercft.R
+import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
 
 @Composable
 fun UserCard(
-    userName: String,
-    userPhoto: String,
-    userAddress: String,
-    userEmail: String
+    user: UsersModel,
+    onClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick?.invoke() }
             .padding(5.dp),
         shape = RoundedCornerShape(CornerSize(10.dp))
 
@@ -46,7 +49,7 @@ fun UserCard(
             modifier = Modifier.fillMaxWidth()
         ) {
             AsyncImage(
-                model = userPhoto,
+                model = user.picture,
                 contentDescription = null,
                 modifier = Modifier
                     .size(120.dp)
@@ -59,7 +62,7 @@ fun UserCard(
 
             Column {
                 Text(
-                    text = userName,
+                    text = user.fullName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
@@ -68,7 +71,7 @@ fun UserCard(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = userAddress,
+                    text = user.country,
                     fontWeight = FontWeight.Medium,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -77,7 +80,7 @@ fun UserCard(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = userEmail,
+                    text = user.email,
                     fontWeight = FontWeight.Medium,
                     fontSize = 12.sp,
                     textAlign = TextAlign.Center,
@@ -95,10 +98,15 @@ fun UserCard(
 fun UserCardPreview() {
     RandomUserCFTTheme {
         UserCard(
-            userName = "Sarah Cote",
-            userAddress = "Russia Moscow",
-            userEmail = "example@mail.ru",
-            userPhoto = ""
+            user = UsersModel(
+                "Sarah Cote",
+                "Russia Moscow",
+                "example@mail.ru",
+                "",
+                phone = "1234.4321",
+                coordinates = ""
+            ),
+            onClick = {}
         )
     }
 }
