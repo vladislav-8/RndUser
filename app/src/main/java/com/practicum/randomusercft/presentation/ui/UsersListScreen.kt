@@ -2,6 +2,8 @@ package com.practicum.randomusercft.presentation.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -22,14 +26,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import kotlinx.coroutines.launch
@@ -41,9 +43,13 @@ fun UsersListScreen(
     onClick: (UsersModel) -> Unit
 ) {
     val viewModel = viewModel<MainActivityViewModel>()
+    val historyList = viewModel.state.value.users
 
     val isVisible = remember {
         mutableStateOf(true)
+    }
+    val isHistoryVisible = remember {
+        mutableStateOf(false)
     }
 
     var isRefreshing by remember { mutableStateOf(false) }
@@ -71,15 +77,42 @@ fun UsersListScreen(
     ) {
         Button(
             onClick = {
+                isHistoryVisible.value = !isHistoryVisible.value
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            modifier = Modifier.border(2.dp, color = Color.Red)
+        ) {
+            Text(text = "История просмотров пользователей")
+        }
+        AnimatedVisibility(visible = isHistoryVisible.value) {
+
+            Box {
+                LazyColumn(
+                    modifier = Modifier
+                        .clipToBounds()
+                ) {
+                    itemsIndexed(historyList) {index, item ->
+                        val user = historyList[index]
+                        UserCard(user = user, onClick = { onClick(user) })
+                    }
+                }
+            }
+        }
+
+        Button(
+            onClick = {
                 isVisible.value = !isVisible.value
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
         ) {
-            Text(text = "нажми на меня, чтобы скрыть список")
+            Text(text = "нажми на меня, чтобы показать список")
         }
         AnimatedVisibility(visible = isVisible.value) {
 
-            Box() {
+            Box {
                 LazyColumn(
                     modifier = Modifier
                         .pullRefresh(pullRefreshState)
