@@ -1,5 +1,6 @@
 package com.practicum.randomusercft.data.impl
 
+import com.practicum.randomusercft.common.db.UserDao
 import com.practicum.randomusercft.data.api.RandomUserApi
 import com.practicum.randomusercft.data.mappers.toModel
 import com.practicum.randomusercft.data.models.UsersModel
@@ -9,9 +10,12 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
-
+/**
+ * имплементация репо
+ */
 class UsersRepositoryImpl @Inject constructor(
-    private val randomUserApi: RandomUserApi
+    private val randomUserApi: RandomUserApi,
+    private val userDao: UserDao
 ) : UsersRepository {
 
     override suspend fun getAllUsers(): List<UsersModel> {
@@ -26,6 +30,18 @@ class UsersRepositoryImpl @Inject constructor(
             "Failed to retrieve user model: " +
                     response.errorBody().toString()
         )
+    }
+
+    override suspend fun insertUser(usersModel: UsersModel) {
+        userDao.insert(usersModel)
+    }
+
+    override suspend fun deleteUser(usersModel: UsersModel) {
+        userDao.delete(usersModel)
+    }
+
+    override fun getHistoryUsers(): Flow<List<UsersModel>> {
+        return userDao.getUsers()
     }
 }
 

@@ -10,7 +10,9 @@ import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import com.practicum.randomusercft.presentation.ui.ContentScreen
 import com.practicum.randomusercft.presentation.ui.DetailScreen
-
+/**
+ * навигация приложения
+ */
 @Composable
 fun Navigation() {
     val navController = rememberNavController()

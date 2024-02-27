@@ -7,6 +7,9 @@ import com.practicum.randomusercft.common.navigation.Navigation
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * энтрипоинт МейнАктивити
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

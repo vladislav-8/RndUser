@@ -10,14 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.domain.UiState
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
-import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * стейты для показа скринов
+ */
 
 @Composable
 fun ContentScreen(
@@ -49,7 +49,12 @@ fun ContentScreen(
 
         is UiState.SUCCESS -> {
             val users = state.users
-            UsersListScreen(users, onClick = { navigateToDetails(it) })
+            UsersListScreen(
+                users,
+                onClick = {
+                navigateToDetails(it)
+                viewModel.insertUser(it)
+            })
         }
     }
 }

@@ -5,7 +5,9 @@ import com.practicum.randomusercft.utils.Constants.RESPONSE_COUNT
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
-
+/**
+ * апи для получения списка пользователей
+ */
 interface RandomUserApi {
 
     @GET("api/")

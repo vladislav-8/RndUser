@@ -1,6 +1,7 @@
 package com.practicum.randomusercft.presentation.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -22,18 +24,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
+import com.practicum.randomusercft.R
 import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * скрин, показывающий список рандом юзеров
+ */
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun UsersListScreen(
@@ -41,9 +46,17 @@ fun UsersListScreen(
     onClick: (UsersModel) -> Unit
 ) {
     val viewModel = viewModel<MainActivityViewModel>()
+    val historyList = viewModel.state.value.users
 
     val isVisible = remember {
         mutableStateOf(true)
+    }
+    val isHistoryVisible = remember {
+        mutableStateOf(false)
+    }
+
+    if (isHistoryVisible.value) {
+        isVisible.value = false
     }
 
     var isRefreshing by remember { mutableStateOf(false) }
@@ -71,15 +84,52 @@ fun UsersListScreen(
     ) {
         Button(
             onClick = {
+                isHistoryVisible.value = !isHistoryVisible.value
+            },
+            shape = RoundedCornerShape(50),
+            border = BorderStroke(2.dp, Color.Red),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            )
+        ) {
+            Text(text = stringResource(id = R.string.history_list))
+        }
+        AnimatedVisibility(visible = isHistoryVisible.value) {
+
+            Box {
+                if (historyList.isEmpty()) {
+                    Text(stringResource(id = R.string.list_is_empty))
+                } else {
+                    LazyColumn(
+                        modifier = Modifier
+                            .clipToBounds()
+                    ) {
+                        itemsIndexed(historyList) { index, item ->
+                            val user = historyList[index]
+                            UserCard(
+                                user = user,
+                                onClick = { onClick(user) },
+                                onLongClick = {
+                                    viewModel.deleteUser(user)
+                                }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        Button(
+            onClick = {
                 isVisible.value = !isVisible.value
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
         ) {
-            Text(text = "нажми на меня, чтобы скрыть список")
+            Text(text = stringResource(id = R.string.open_list_button))
         }
         AnimatedVisibility(visible = isVisible.value) {
-
-            Box() {
+            Box {
                 LazyColumn(
                     modifier = Modifier
                         .pullRefresh(pullRefreshState)
@@ -87,7 +137,10 @@ fun UsersListScreen(
                 ) {
                     itemsIndexed(users) { index, item ->
                         val user = users[index]
-                        UserCard(user = user, onClick = { onClick(user) })
+                        UserCard(
+                            user = user,
+                            onClick = { onClick(user) }
+                        )
                     }
                 }
                 PullRefreshIndicator(
@@ -99,3 +152,5 @@ fun UsersListScreen(
         }
     }
 }
+
+
