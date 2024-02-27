@@ -7,7 +7,9 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.practicum.randomusercft.data.models.UsersModel
 import kotlinx.coroutines.flow.Flow
-
+/**
+ * дао БД
+ */
 @Dao
 interface UserDao {
 

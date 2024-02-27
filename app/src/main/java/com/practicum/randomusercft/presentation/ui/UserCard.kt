@@ -1,6 +1,8 @@
 package com.practicum.randomusercft.presentation.ui
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,15 +33,23 @@ import com.practicum.randomusercft.R
 import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
 
+/**
+ * карточка для юзера
+ */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun UserCard(
     user: UsersModel,
-    onClick: (() -> Unit)? = null
+    onClick: (() -> Unit)? = null,
+    onLongClick: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick?.invoke() }
+            .combinedClickable(
+                onLongClick = { onLongClick.invoke() },
+                onClick = { onClick?.invoke() }
+            )
             .padding(5.dp),
         shape = RoundedCornerShape(CornerSize(10.dp))
 

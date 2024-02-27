@@ -33,6 +33,9 @@ import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
 import java.util.Locale
 
+/**
+ * скрин деталей пользователя
+ */
 @Composable
 fun DetailScreen(
     user: UsersModel
@@ -115,7 +118,7 @@ private fun makeCall(context: Context, mob: String) {
     } catch (e: java.lang.Exception) {
         Toast.makeText(
             context,
-            "Unable to call at this time", Toast.LENGTH_SHORT
+            R.string.unable_to_call, Toast.LENGTH_SHORT
         ).show()
     }
 }

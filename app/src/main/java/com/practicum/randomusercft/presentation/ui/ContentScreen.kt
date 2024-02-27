@@ -15,6 +15,10 @@ import com.practicum.randomusercft.domain.UiState
 import com.practicum.randomusercft.presentation.MainActivityViewModel
 import com.practicum.randomusercft.presentation.theme.RandomUserCFTTheme
 
+/**
+ * стейты для показа скринов
+ */
+
 @Composable
 fun ContentScreen(
     navigateToDetails: (UsersModel) -> Unit,

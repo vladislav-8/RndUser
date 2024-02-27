@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">RandomUserCFT</string>
+    <string name="list_is_empty">Список пуст</string>
+    <string name="history_list">История просмотров пользователей</string>
+    <string name="open_list_button">Нажми на меня, чтобы показать список</string>
+    <string name="something_went_wrong">Что-то пошло не так..</string>
+    <string name="try_again">Попробуйте еще раз</string>
+    <string name="unable_to_call">В данный момент звонок не доступен</string>
 </resources>

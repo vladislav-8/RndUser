@@ -10,7 +10,9 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import java.io.IOException
 import javax.inject.Inject
-
+/**
+ * имплементация репо
+ */
 class UsersRepositoryImpl @Inject constructor(
     private val randomUserApi: RandomUserApi,
     private val userDao: UserDao

@@ -1,5 +1,9 @@
 package com.practicum.randomusercft.utils
 
+
+/**
+ * константы приложения
+ */
 object Constants {
     const val RESPONSE_COUNT = 10
     const val BASE_URL = "https://randomuser.me/"

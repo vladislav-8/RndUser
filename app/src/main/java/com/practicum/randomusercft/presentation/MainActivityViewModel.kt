@@ -1,6 +1,5 @@
 package com.practicum.randomusercft.presentation
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -10,10 +9,7 @@ import com.practicum.randomusercft.data.models.UsersModel
 import com.practicum.randomusercft.domain.HistoryUsersState
 import com.practicum.randomusercft.domain.UiState
 import com.practicum.randomusercft.domain.repository.UsersUseCases
-import com.practicum.randomusercft.domain.usecase.DeleteUserUseCase
 import com.practicum.randomusercft.domain.usecase.GetAllUsersUseCase
-import com.practicum.randomusercft.domain.usecase.GetHistoryUsersUseCase
-import com.practicum.randomusercft.domain.usecase.InsertUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -22,6 +18,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/**
+ * основная вьюмодель приложения
+ */
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     private val getAllUsersUseCase: GetAllUsersUseCase,
@@ -51,6 +50,12 @@ class MainActivityViewModel @Inject constructor(
     fun insertUser(usersModel: UsersModel) {
         viewModelScope.launch(Dispatchers.IO) {
             usersUseCases.insertUserUseCase.invoke(usersModel)
+        }
+    }
+
+    fun deleteUser(usersModel: UsersModel) {
+        viewModelScope.launch(Dispatchers.IO) {
+            usersUseCases.deleteUserUseCase.invoke(usersModel)
         }
     }
 
